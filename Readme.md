@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дарья Савина](https://up.htmlacademy.ru/javascript/18/user/1023273).
-* Наставник: `Неизвестно`.
+* Наставник: [Роман Нуйсков :)](https://vk.com/e7c2188cd4d48e4a658bfefb763cc62f).
 
 ---
 
