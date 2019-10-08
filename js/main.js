@@ -76,7 +76,7 @@ function renderCommentTemplate(comment) {
   var template = document.querySelector('#comment').content;
   var userComment = template.cloneNode(true);
 
-  userComment.querySelector('.social__picture').src = 'img/avatar-'+window.getRandomInt(1, 6)+'.svg';
+  userComment.querySelector('.social__picture').src = 'img/avatar-' + window.getRandomInt(1, 6) + '.svg';
   userComment.querySelector('.social__picture').setAttribute('alt', 'Ромка');
   userComment.querySelector('.social__text').textContent = comment;
 
@@ -87,24 +87,24 @@ function renderComments(comments) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < comments.length; i++) {
-    fragment.appendChild(renderCommentTemplate(comments[i]))
+    fragment.appendChild(renderCommentTemplate(comments[i]));
   }
 
   return fragment;
 }
 
 function showBigPicture(photo) {
-  var bigPicture = document.querySelector('.big-picture')
+  var bigPicture = document.querySelector('.big-picture');
   bigPicture.classList.remove('hidden');
   bigPicture.querySelector('.big-picture__img').querySelector('img').setAttribute('src', photo.url);
   bigPicture.querySelector('.social__caption').textContent = photo.description.toString();
   bigPicture.querySelector('.comments-count').textContent = photo.comments.length.toString();
 
   bigPicture.querySelector('.social__comments').innerHTML = '';
-  bigPicture.querySelector('.social__comments').appendChild(renderComments(photo.comments))
+  bigPicture.querySelector('.social__comments').appendChild(renderComments(photo.comments));
 
   bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
-  bigPicture.querySelector('.comments-loader').classList.add('visually-hidden')
+  bigPicture.querySelector('.comments-loader').classList.add('visually-hidden');
 }
 
 var photos = generatePhotosMock();
