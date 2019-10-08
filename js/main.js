@@ -38,7 +38,7 @@ var getPhotoMock = function (index) {
 
 
   var comments = [];
-  for (var i = 0; i < window.getRandomInt(3, 10); i++) {
+  for (var i = 0; i < window.getRandomInt(5, 23); i++) {
     comments.push(window.getRandomArrayElement(commentVariants));
   }
 
@@ -55,13 +55,13 @@ function renderImages(photos) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < photos.length; i++) {
-    fragment.appendChild(renderTemplate(photos[i]));
+    fragment.appendChild(renderImageTemplate(photos[i]));
   }
 
   return fragment;
 }
 
-function renderTemplate(photo) {
+function renderImageTemplate(photo) {
   var template = document.querySelector('#picture').content.querySelector('.picture');
   var userImage = template.cloneNode(true);
 
@@ -72,4 +72,41 @@ function renderTemplate(photo) {
   return userImage;
 }
 
-pictures.appendChild(renderImages(generatePhotosMock()));
+function renderCommentTemplate(comment) {
+  var template = document.querySelector('#comment').content;
+  var userComment = template.cloneNode(true);
+
+  userComment.querySelector('.social__picture').src = 'img/avatar-'+window.getRandomInt(1, 6)+'.svg';
+  userComment.querySelector('.social__picture').setAttribute('alt', 'Ромка');
+  userComment.querySelector('.social__text').textContent = comment;
+
+  return userComment;
+}
+
+function renderComments(comments) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < comments.length; i++) {
+    fragment.appendChild(renderCommentTemplate(comments[i]))
+  }
+
+  return fragment;
+}
+
+function showBigPicture(photo) {
+  var bigPicture = document.querySelector('.big-picture')
+  bigPicture.classList.remove('hidden');
+  bigPicture.querySelector('.big-picture__img').querySelector('img').setAttribute('src', photo.url);
+  bigPicture.querySelector('.social__caption').textContent = photo.description.toString();
+  bigPicture.querySelector('.comments-count').textContent = photo.comments.length.toString();
+
+  bigPicture.querySelector('.social__comments').innerHTML = '';
+  bigPicture.querySelector('.social__comments').appendChild(renderComments(photo.comments))
+
+  bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
+  bigPicture.querySelector('.comments-loader').classList.add('visually-hidden')
+}
+
+var photos = generatePhotosMock();
+pictures.appendChild(renderImages(photos));
+showBigPicture(photos[0]);
