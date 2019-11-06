@@ -14,8 +14,6 @@
   var inputElement = formElement.querySelector('.text__hashtags');
   var buttonElement = formElement.querySelector('#upload-submit');
 
-  // console.log(formElement, inputElement, buttonElement);
-
   var checkDoubleHashtags = function (tags) {
     for (var i = 0; i < tags.length; i++) {
       for (var t = 0; t < tags.length; t++) {

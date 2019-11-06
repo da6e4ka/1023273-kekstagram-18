@@ -1,16 +1,12 @@
 'use strict';
 
 (function () {
-
-  // var pin = document.querySelector('.effect-level__pin');
-  // var effectList = document.querySelector('.effects__list');
   var imagePreview = document.querySelector('.img-upload__preview');
   var effectChrome = document.querySelector('#effect-chrome');
   var effectSepia = document.querySelector('#effect-sepia');
   var effectMarvin = document.querySelector('#effect-marvin');
   var effectPhobos = document.querySelector('#effect-phobos');
   var effectHeat = document.querySelector('#effect-heat');
-  // var toggle = effectList.querySelector('input');
 
 
   var allEffects = {
