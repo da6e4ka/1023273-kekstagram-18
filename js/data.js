@@ -28,7 +28,9 @@
     });
   }
 
+  // ОТКРЫВАНИЕ И ЗАКРЫВАНИЕ БОЛЬШОЙ КАРТИНКИ
   var ESC_KEYCODE = 27;
+  // var ENTER_KEYCODE = 13;
 
   var bigPic = document.querySelector('.big-picture');
   var bigPicSocial = bigPic.querySelector('.big-picture__social');
@@ -55,6 +57,8 @@
     });
   };
 
+
+  // ОТРИСОВКА БЛОКА С КОММЕНТАРИЯМИ
   var renderComments = function (comments, number) {
     socialComments.innerHTML = '';
     for (var i = 0; i <= comments.length && i < number; i++) {
@@ -84,10 +88,13 @@
 
   var closeButton = bigPic.querySelector('#picture-cancel');
   var socialComments = document.querySelector('.social__comments');
+  //  var socialComment = document.querySelector('.social__comment');
   var commentsLoader = document.querySelector('.comments-loader');
 
+  // ШАБЛОН
   function renderTemplate(image) {
     var userImage = template.cloneNode(true);
+    //  var image = images[i];
 
     userImage.querySelector('.picture__img').src = image.url;
     userImage.querySelector('.picture__likes').textContent = image.likes;
@@ -98,6 +105,7 @@
       bigPicSocial.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
       bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
       bigPicSocial.querySelector('.social__caption').textContent = image.description;
+      // bigPicSocial.querySelector('.social__comment').querySelector('.social__text').textContent = image.messages;
       bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
 
       var commentsNumber = 5;
@@ -125,6 +133,7 @@
     pictures.appendChild(fragment);
   };
 
+  // СООБЩЕНИЕ ОБ ОШИБКЕ
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
@@ -141,5 +150,90 @@
 
   window.backend.load(URL, getImage, errorHandler);
 
+
+  // ОТПРАВКА ФОРМЫ С ФОТО
+  var form = document.querySelector('.img-upload__form');
+  var main = document.querySelector('main');
+
+  var sendFormCallback = function () {
+    window.helpers.hideItem(form);
+    openSuccess();
+  };
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    window.backend.sendForm(new FormData(form), sendFormCallback, openError);
+  });
+
+  // function removeElement(elem) {
+  // var elem = document.getElementById(id);
+  // return elem.parentNode.removeChild(elem);
+  // }
+
+  var openSuccess = function () {
+    var successTemplate = document.querySelector('#success').content;
+    var successPopup = successTemplate.cloneNode(true).firstElementChild;
+    // console.log(successPopup);
+    // console.log(successTemplate);
+    // var element = document.getElementsByClassName('success');
+
+    main.appendChild(successPopup);
+
+    var successButton = document.querySelector('.success__button');
+    // почему при объявлении до main.appendChild(successPopup); возникает ошибка
+
+    var closeSuccess = function () {
+      main.removeChild(successPopup);
+      // successPopup.innerHTML = '';
+      successButton.removeEventListener('click', closeSuccess);
+      document.removeEventListener('keydown', EscSuccessHandler);
+    };
+
+    successButton.addEventListener('click', closeSuccess);
+
+    var EscSuccessHandler = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closeSuccess();
+      }
+    };
+  };
+
+  var openError = function () {
+    window.helpers.hideItem(form);
+    var errorTemplate = document.querySelector('#error').content;
+
+    var errorPopup = errorTemplate.cloneNode(true);
+    // console.log(errorPopup);
+
+    // console.log(main.querySelector('#error'));
+    main.appendChild(errorPopup);
+
+    var errorButton = document.querySelector('.error__button');
+
+    // var element = document.getElementsByClassName('error');
+    // console.log(element);
+
+    var closeError = function () {
+      // removeElement(errorPopup);
+      // element.main.removeChild(element);
+      errorButton.removeEventListener('click', closeError);
+      document.removeEventListener('keydown', EscErrorHandler);
+    };
+
+    errorButton.addEventListener('click', closeError);
+
+    var EscErrorHandler = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closeError();
+      }
+    };
+
+    document.addEventListener('keydown', EscErrorHandler);
+
+  };
+
 })();
+
+
 
