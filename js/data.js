@@ -77,22 +77,11 @@
       li.appendChild(paragraph);
       socialComments.appendChild(li);
     }
-    /*
-      for (var i = 0; i < comments.length; i++) {
-      socialComments.innerHTML +=
-      '<li class="social__comment">' +
-         '<img class="social__picture"' +
-            'src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg'
-          + 'alt="Автор комментария"'
-         +  'width="35" height="35">'
-        + '<p class="social__text">' + comments[i].message + '</p>'
-    + '</li>';
-    console.log(socialComments);
-    }*/
 
     if (number > comments.length) {
       commentsLoader.classList.add('visually-hidden');
     }
+
     commentsLoader.classList.remove('visually-hidden');
 
   };
