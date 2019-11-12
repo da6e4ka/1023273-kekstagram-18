@@ -28,7 +28,9 @@
     });
   }
 
+  // ОТКРЫВАНИЕ И ЗАКРЫВАНИЕ БОЛЬШОЙ КАРТИНКИ
   var ESC_KEYCODE = 27;
+  // var ENTER_KEYCODE = 13;
 
   var bigPic = document.querySelector('.big-picture');
   var bigPicSocial = bigPic.querySelector('.big-picture__social');
@@ -55,6 +57,8 @@
     });
   };
 
+
+  // ОТРИСОВКА БЛОКА С КОММЕНТАРИЯМИ
   var renderComments = function (comments, number) {
     socialComments.innerHTML = '';
     for (var i = 0; i <= comments.length && i < number; i++) {
@@ -73,6 +77,19 @@
       li.appendChild(paragraph);
       socialComments.appendChild(li);
     }
+    /*
+      for (var i = 0; i < comments.length; i++) {
+      socialComments.innerHTML +=
+      '<li class="social__comment">' +
+         '<img class="social__picture"' +
+            'src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg'
+          + 'alt="Автор комментария"'
+         +  'width="35" height="35">'
+        + '<p class="social__text">' + comments[i].message + '</p>'
+    + '</li>';
+    console.log(socialComments);
+    }*/
+
     if (number > comments.length) {
       commentsLoader.classList.add('visually-hidden');
     }
@@ -82,10 +99,13 @@
 
   var closeButton = bigPic.querySelector('#picture-cancel');
   var socialComments = document.querySelector('.social__comments');
+  //  var socialComment = document.querySelector('.social__comment');
   var commentsLoader = document.querySelector('.comments-loader');
 
+  // ШАБЛОН
   function renderTemplate(image) {
     var userImage = template.cloneNode(true);
+    //  var image = images[i];
 
     userImage.querySelector('.picture__img').src = image.url;
     userImage.querySelector('.picture__likes').textContent = image.likes;
@@ -96,6 +116,7 @@
       bigPicSocial.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
       bigPicSocial.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
       bigPicSocial.querySelector('.social__caption').textContent = image.description;
+      // bigPicSocial.querySelector('.social__comment').querySelector('.social__text').textContent = image.messages;
       bigPicSocial.querySelector('.comments-count').textContent = image.comments.length;
 
       var commentsNumber = 5;
@@ -117,12 +138,53 @@
 
   var getImage = function (array) {
     var fragment = document.createDocumentFragment();
+    var filters = document.querySelector('.img-filters');
     for (var i = 0; i < array.length; i++) {
       fragment.appendChild(renderTemplate(array[i]));
     }
     pictures.appendChild(fragment);
+    filters.classList.remove('img-filters--inactive');
   };
 
+  // СОРТИРОВКА
+
+  var successHandler = function (data) {
+    var photos = data;
+    getImage(photos);
+
+    var popularPhotosHandler = window.debounce(function (evt) {
+      removePictures();
+      removeFilter();
+      getImage(photos);
+      evt.target.classList.add('img-filters__button--active');
+    });
+
+    var randomPhotosHandler = window.debounce(function (evt) {
+      removePictures();
+      removeFilter();
+      var uniquePhotos =
+        photos.filter(function (it, i) {
+          return photos.indexOf(it) === i;
+        });
+      window.debounce(getImage(sortRandomPhotos(uniquePhotos)));
+      evt.target.classList.add('img-filters__button--active');
+    });
+
+    var discussedPhotosHandler = window.debounce(function (evt) {
+      removePictures();
+      removeFilter();
+      window.debounce(getImage(sortByComments(photos)));
+      evt.target.classList.add('img-filters__button--active');
+      // console.log(sortByComments(photos));
+    });
+
+    popular.addEventListener('click', popularPhotosHandler);
+    discussed.addEventListener('click', discussedPhotosHandler);
+    random.addEventListener('click', randomPhotosHandler);
+
+  };
+
+  // СООБЩЕНИЕ ОБ ОШИБКЕ
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
@@ -137,9 +199,10 @@
 
   var URL = 'https://js.dump.academy/kekstagram/data';
 
-  window.backend.load(URL, getImage, errorHandler);
+  window.backend.load(URL, successHandler, errorHandler);
 
 
+  // ОТПРАВКА ФОРМЫ С ФОТО
   var form = document.querySelector('.img-upload__form');
   var main = document.querySelector('main');
 
@@ -161,6 +224,7 @@
     main.appendChild(successPopup);
 
     var successButton = document.querySelector('.success__button');
+    // почему при объявлении до main.appendChild(successPopup); возникает ошибка
 
     var closeSuccessHandler = function () {
       main.removeChild(successPopup);
@@ -217,6 +281,43 @@
       }
     });
 
+  };
+
+  // СОРТИРОВКА
+
+  var popular = document.querySelector('#filter-popular');
+  var discussed = document.querySelector('#filter-discussed');
+  var random = document.querySelector('#filter-random');
+
+  var removePictures = function () {
+    var photo = pictures.querySelectorAll('.picture');
+    photo.forEach(function (item) {
+      pictures.removeChild(item);
+    });
+  };
+
+  var removeFilter = function () {
+    var filters = document.querySelector('.img-filters');
+    var filterButtons = filters.querySelectorAll('.img-filters__button');
+    filterButtons.forEach(function (button) {
+      if (button.classList.contains('img-filters__button--active')) {
+        button.classList.remove('img-filters__button--active');
+      }
+    });
+  };
+
+  var sortByComments = function (arr) {
+    return arr.slice().sort(function (a, b) {
+      return b.comments.length - a.comments.length;
+    });
+  };
+
+  var sortRandom = function () {
+    return Math.random() - 0.5;
+  };
+
+  var sortRandomPhotos = function (arr) {
+    return arr.slice(0, 10).sort(sortRandom);
   };
 
 })();
