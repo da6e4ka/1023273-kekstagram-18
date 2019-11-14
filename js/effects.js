@@ -116,14 +116,14 @@
     var rangeWidth = lineElement.offsetWidth;
     var dragged = false;
 
-    var onMouseMove = function (event) {
-      event.preventDefault();
+    var onMouseMove = function (moveEvent) {
+      moveEvent.preventDefault();
       var currentFilter = currentEffect.filter;
-      var shift = startPositionX - event.clientX;
+      var shift = startPositionX - moveEvent.clientX;
       var offsetLeft = getNewOffsetLeft(shift, rangeWidth);
 
       dragged = true;
-      startPositionX = event.clientX;
+      startPositionX = moveEvent.clientX;
       pinElement.style.left = offsetLeft + '%';
       colorDepthElement.style.width = offsetLeft + '%';
 
@@ -136,8 +136,8 @@
       currentEffect.current = offsetLeft / 100;
     };
 
-    var onMouseUp = function (upevent) {
-      upevent.preventDefault();
+    var onMouseUp = function (upEvent) {
+      upEvent.preventDefault();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 

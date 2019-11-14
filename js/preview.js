@@ -19,9 +19,9 @@
     for (var i = 0; i < comments.length && i < number; i++) {
       socialCommentsElement.innerHTML +=
         '<li class="social__comment">'
-        +   '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg" width="35"'
-        +   'height="35">'
-        +   '<p class="social__text">' + comments[i].message + '</p>'
+        + '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg" width="35"'
+        + 'height="35">'
+        + '<p class="social__text">' + comments[i].message + '</p>'
         + '</li>';
     }
 

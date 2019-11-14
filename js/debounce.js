@@ -12,7 +12,7 @@
       }
 
       timeout = window.setTimeout(function () {
-        cb.apply(null, params)
+        cb.apply(null, params);
       }, window.constants.DEBAUNCE_TIME);
     };
   };

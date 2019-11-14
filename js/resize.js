@@ -33,8 +33,8 @@
   };
 
   var resizeBiggerHandler = function () {
-    if (parseInt(scaleControlElement.value) < MAX) {
-      var percent = parseInt(scaleControlElement.value) + STEP;
+    if (parseInt(scaleControlElement.value, 10) < MAX) {
+      var percent = parseInt(scaleControlElement.value, 10) + STEP;
 
       scaleControlElement.value = percent + '%';
       uploadPreviewElement.style.transform = 'scale(' + percent / 100 + ')';
@@ -42,8 +42,8 @@
   };
 
   var resizeSmallerHandler = function () {
-    if (parseInt(scaleControlElement.value) > STEP) {
-      var percent = parseInt(scaleControlElement.value) - STEP;
+    if (parseInt(scaleControlElement.value, 10) > STEP) {
+      var percent = parseInt(scaleControlElement.value, 10) - STEP;
 
       scaleControlElement.value = percent + '%';
       uploadPreviewElement.style.transform = 'scale(' + percent / 100 + ')';
@@ -58,5 +58,5 @@
 
   window.resize = {
     uploadClose: uploadClose
-  }
+  };
 })();

@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   var likes = {
     minimum: 15,
     maximum: 200
