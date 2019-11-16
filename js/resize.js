@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var STEP = 25;
+  var MAX = 100;
+
   var uploadFileElement = document.querySelector('#upload-file');
   var uploadOverlayElement = document.querySelector('.img-upload__overlay');
   var uploadCancelElement = document.querySelector('.img-upload__cancel');
@@ -9,10 +12,9 @@
   var biggerControlElement = document.querySelector('.scale__control--bigger');
   var uploadPreviewElement = document.querySelector('.img-upload__preview');
 
-  var STEP = 25;
-  var MAX = 100;
 
   var uploadShow = function () {
+    uploadPreviewElement.style.transform = 'scale(1)';
     uploadOverlayElement.classList.remove('hidden');
     window.helpers.hideElement(window.effects.levelElement);
   };
@@ -57,6 +59,7 @@
   uploadCancelElement.addEventListener('click', uploadClose);
 
   window.resize = {
-    uploadClose: uploadClose
-  };
+    uploadClose: uploadClose,
+    uploadPreviewElement: uploadPreviewElement
+};
 })();

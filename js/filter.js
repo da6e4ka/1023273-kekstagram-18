@@ -22,12 +22,18 @@
     });
   };
 
-  window.sort = {
+  var sortByPopularity = function (photos) {
+    return photos.sort((photo1, photo2) => {
+      return photo1.likes < photo2.likes ? 1 : -1
+    })
+  };
+
+  window.filter = {
+    sortByPopularity: sortByPopularity,
     removePictures: removePictures,
     removeFilter: removeFilter,
     popularFilterElement: popularFilterElement,
     discussedFilterElement: discussedFilterElement,
     randomFilterElement: randomFilterElement
   };
-
 })();

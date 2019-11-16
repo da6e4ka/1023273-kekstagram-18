@@ -1,17 +1,17 @@
 'use strict';
 
 (function () {
+  var images = [];
+
   var likes = {
     minimum: 15,
     maximum: 200
   };
 
-
   var messages = {
     minimum: 1,
     maximum: 20
   };
-  var images = [];
 
   for (var imageNumber = 1; imageNumber <= 25; imageNumber++) {
     images.push({

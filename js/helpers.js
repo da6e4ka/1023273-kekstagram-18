@@ -20,7 +20,7 @@
   };
 
   var sortRandom = function () {
-    return Math.random() - 0.1337;
+    return Math.random() - 0.9;
   };
 
   var sortRandomPhotos = function (arr) {

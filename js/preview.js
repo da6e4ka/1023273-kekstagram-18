@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var COMMENTS_STEP = 5;
   var picturesElement = document.querySelector('.pictures');
   var templateElement = document.querySelector('#picture').content.querySelector('.picture');
   var bigPictureElement = document.querySelector('.big-picture');
@@ -10,20 +11,19 @@
   var commentsLoaderElement = document.querySelector('.comments-loader');
   var uploadFormElement = document.querySelector('.img-upload__form');
   var mainElement = document.querySelector('main');
+  var commentTemplate = document.querySelector('#comment').content;
 
-  var commentsCount = 5;
-
-  var renderComments = function (comments, number) {
-    socialCommentsElement.innerHTML = '';
-
-    for (var i = 0; i < comments.length && i < number; i++) {
-      socialCommentsElement.innerHTML +=
-        '<li class="social__comment">'
-        + '<img class="social__picture" src="img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg" width="35"'
-        + 'height="35">'
-        + '<p class="social__text">' + comments[i].message + '</p>'
-        + '</li>';
+  var renderComments = function (comments, number, from) {
+    for (var i = from; i < comments.length && i < number; i++) {
+      var commentElement = commentTemplate.cloneNode(true)
+      commentElement.querySelector('.social__picture').src = 'img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
+      commentElement.querySelector('.social__text').textContent = comments[i].message;
+      socialCommentsElement.appendChild(commentElement)
     }
+
+    bigPictureSocialElement.querySelector('.comments-count')
+      .textContent = number > comments.length ? comments.length : number;
+    bigPictureSocialElement.querySelector('.total-comments-count').textContent = comments.length;
 
     if (number > comments.length) {
       commentsLoaderElement.classList.add('visually-hidden');
@@ -37,23 +37,28 @@
 
     userImage.querySelector('.picture__img').src = image.url;
     userImage.querySelector('.picture__likes').textContent = image.likes;
-    userImage.querySelector('.picture__comments').textContent = image.messages;
+    userImage.querySelector('.picture__comments').textContent = image.comments.length;
     userImage.addEventListener('click', function () {
+      var commentsCount = COMMENTS_STEP;
+
+      while (socialCommentsElement.firstChild) {
+        socialCommentsElement.removeChild(socialCommentsElement.firstChild);
+      }
+
       bigPictureSocialElement.querySelector('.social__likes').querySelector('.likes-count').textContent = image.likes;
-      bigPictureSocialElement.querySelector('.social__comment-count').querySelector('.comments-count').textContent = image.messages;
       bigPictureSocialElement.querySelector('.social__caption').textContent = image.description;
-      bigPictureSocialElement.querySelector('.comments-count').textContent = image.comments.length;
-      window.fullsize.showBigPhoto(image);
-      renderComments(image.comments, commentsCount);
+
+      window.bigSizePhoto.showBigPhoto(image);
+      renderComments(image.comments, commentsCount, 0);
 
       commentsLoaderElement.addEventListener('click', function () {
         commentsCount += 5;
-        renderComments(image.comments, commentsCount);
+        renderComments(image.comments, commentsCount, commentsCount - COMMENTS_STEP);
       });
     });
 
     pictureCancelElement.addEventListener('click', function () {
-      window.fullsize.closeBigPhoto(image);
+      window.bigSizePhoto.closeBigPhoto(image);
     });
 
     return userImage;
@@ -68,23 +73,26 @@
     }
 
     picturesElement.appendChild(fragment);
+
     filters.classList.remove('img-filters--inactive');
   };
 
   var successHandler = function (data) {
     var photos = data;
-    getImage(photos);
+    getImage(window.filter.sortByPopularity(photos));
 
     var popularPhotosHandler = window.debounce(function (event) {
-      window.sort.removePictures();
-      window.sort.removeFilter();
-      getImage(photos);
+      window.filter.removePictures();
+      window.filter.removeFilter();
+
+      getImage(window.filter.sortByPopularity(photos));
+
       event.target.classList.add('img-filters__button--active');
     });
 
     var randomPhotosHandler = window.debounce(function (event) {
-      window.sort.removePictures();
-      window.sort.removeFilter();
+      window.filter.removePictures();
+      window.filter.removeFilter();
       var uniquePhotos =
         photos.filter(function (it, i) {
           return photos.indexOf(it) === i;
@@ -94,15 +102,15 @@
     });
 
     var discussedPhotosHandler = window.debounce(function (event) {
-      window.sort.removePictures();
-      window.sort.removeFilter();
+      window.filter.removePictures();
+      window.filter.removeFilter();
       window.debounce(getImage(window.helpers.sortByComments(photos)));
       event.target.classList.add('img-filters__button--active');
     });
 
-    window.sort.popularFilterElement.addEventListener('click', popularPhotosHandler);
-    window.sort.discussedFilterElement.addEventListener('click', discussedPhotosHandler);
-    window.sort.randomFilterElement.addEventListener('click', randomPhotosHandler);
+    window.filter.popularFilterElement.addEventListener('click', popularPhotosHandler);
+    window.filter.discussedFilterElement.addEventListener('click', discussedPhotosHandler);
+    window.filter.randomFilterElement.addEventListener('click', randomPhotosHandler);
 
   };
 
@@ -117,7 +125,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.backend.load(window.constants.DATA_URL, successHandler, errorHandler);
+  window.api.load(window.constants.DATA_URL, successHandler, errorHandler);
 
 
   var sendFormCallback = function () {
@@ -128,7 +136,7 @@
   uploadFormElement.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    window.backend.request(new FormData(uploadFormElement), sendFormCallback, openError);
+    window.api.request(new FormData(uploadFormElement), sendFormCallback, openError);
   });
 
   var openSuccess = function () {
@@ -146,21 +154,22 @@
       document.removeEventListener('keydown', escSuccessHandler);
     };
 
-    successButton.addEventListener('click', closeSuccessHandler);
-
     var escSuccessHandler = function (event) {
       if (event.keyCode === window.constants.ESC_KEYCODE) {
         closeSuccessHandler();
       }
     };
 
-    document.addEventListener('keydown', escSuccessHandler);
-
-    document.addEventListener('click', function (event) {
+    var clickCloseHandler = function(event) {
       if (event.target === successPopup) {
         closeSuccessHandler();
       }
-    });
+    };
+
+    successButton.addEventListener('click', closeSuccessHandler);
+
+    document.addEventListener('keydown', escSuccessHandler);
+    document.addEventListener('click', clickCloseHandler);
   };
 
   var openError = function () {

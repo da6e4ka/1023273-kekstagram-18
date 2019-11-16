@@ -23,7 +23,7 @@
     });
   };
 
-  window.fullsize = {
+  window.bigSizePhoto = {
     closeBigPhoto: closeBigPhoto,
     onPopupClose: onPopupClose,
     showBigPhoto: showBigPhoto

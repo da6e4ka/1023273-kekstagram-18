@@ -6,7 +6,7 @@
   var buttonElement = formElement.querySelector('#upload-submit');
   var textareaElement = document.querySelector('.text__description');
 
-  var RULES = {
+  var Rules = {
     MAX_COMMENT_LENGTH: 140,
     START_SYMBOL: '#',
     START_POSITION: 0,
@@ -19,7 +19,7 @@
   };
 
   var validateComment = function (comment) {
-    if (comment.length > RULES.MAX_COMMENT_LENGTH) {
+    if (comment.length > Rules.MAX_COMMENT_LENGTH) {
       textareaElement.setCustomValidity('Длина комментария не может составлять больше 140 символов;');
       setErrorBorder(textareaElement);
       return false;
@@ -39,10 +39,10 @@
   };
 
   var validateHashtag = function (hashtag) {
-    var isLong = hashtag.length > RULES.MAX_LENGTH;
+    var isLong = hashtag.length > Rules.MAX_LENGTH;
     var isWrong = hashtag[0] !== '#';
     var isEmpty = hashtag === '#';
-    var isSpace = hashtag.indexOf(RULES.START_SYMBOL, 1) > 1;
+    var isSpace = hashtag.indexOf(Rules.START_SYMBOL, 1) > 1;
 
     if (isLong) {
       inputElement.setCustomValidity('Максимальная длинна - 20 символов');
@@ -75,7 +75,7 @@
       return false;
     }
 
-    var isTooMany = tags.length > RULES.MAX_COUNT;
+    var isTooMany = tags.length > Rules.MAX_COUNT;
     if (isTooMany) {
       inputElement.setCustomValidity('Максимум может быть 5 хэш-тегов');
       return false;
