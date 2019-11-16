@@ -7,55 +7,41 @@
     UNEXPECTED_ERROR: 'Произошла ошибка'
   };
 
-  var load = function (URL, onSuccess, onError) {
+  var ajax = function(URL, TYPE, data, onSuccess, onError, onLoad) {
     var xhr = new XMLHttpRequest();
+
     xhr.responseType = 'json';
+
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onSuccess(xhr.response);
+        onLoad && onLoad  && onLoad(xhr.response);
+        onSuccess && onSuccess(xhr.response);
       } else {
-        onError(Errors.UNEXPECTED_ERROR);
+        onError && onError(Errors.UNEXPECTED_ERROR);
       }
     });
+
     xhr.addEventListener('error', function () {
-      onError(Errors.CONNECTION_ERROR);
+      onError && onError(Errors.CONNECTION_ERROR);
     });
+
     xhr.addEventListener('timeout', function () {
-      onError(Errors.TIMEOUT_ERROR);
+      onError && onError(Errors.TIMEOUT_ERROR);
     });
 
     xhr.timeout = window.constants.CONNECTION_TIMEOUT;
 
-    xhr.open('GET', URL);
-    xhr.send();
+    xhr.open(TYPE, URL);
+    xhr.send(data);
+  };
+
+  var load = function (URL, onSuccess, onError) {
+    ajax(URL, 'GET', null, onSuccess, onError, null)
   };
 
   var request = function (data, onLoad, onError) {
-    var xhr = new XMLHttpRequest();
     var URL = 'https://js.dump.academy/kekstagram';
-
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        onLoad(xhr.response);
-      } else {
-        onError(Errors.UNEXPECTED_ERROR);
-      }
-    });
-
-    xhr.addEventListener('error', function () {
-      onError(Errors.CONNECTION_ERROR);
-    });
-
-    xhr.addEventListener('timeout', function () {
-      onError(Errors.TIMEOUT_ERROR);
-    });
-
-    xhr.timeout = window.constants.CONNECTION_TIMEOUT;
-
-    xhr.open('POST', URL);
-    xhr.send(data);
+    ajax(URL, 'POST', data, null, onError, onLoad)
   };
 
   window.api = {

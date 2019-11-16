@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var MAX_IMAGES_CUNT = 25;
   var images = [];
 
   var likes = {
@@ -13,7 +14,7 @@
     maximum: 20
   };
 
-  for (var imageNumber = 1; imageNumber <= 25; imageNumber++) {
+  for (var imageNumber = 1; imageNumber <= MAX_IMAGES_CUNT; imageNumber++) {
     images.push({
       url: 'photos/' + imageNumber + '.jpg',
       likes: window.helpers.getRandomNumber(likes.minimum, likes.maximum),

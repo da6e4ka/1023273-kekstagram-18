@@ -52,7 +52,7 @@
       renderComments(image.comments, commentsCount, 0);
 
       commentsLoaderElement.addEventListener('click', function () {
-        commentsCount += 5;
+        commentsCount += COMMENTS_STEP;
         renderComments(image.comments, commentsCount, commentsCount - COMMENTS_STEP);
       });
     });
@@ -68,9 +68,9 @@
     var fragment = document.createDocumentFragment();
     var filters = document.querySelector('.img-filters');
 
-    for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(renderTemplate(array[i]));
-    }
+    array.forEach(element => {
+      fragment.appendChild(renderTemplate(element));
+    });
 
     picturesElement.appendChild(fragment);
 
@@ -149,7 +149,7 @@
     var closeSuccessHandler = function () {
       mainElement.removeChild(successPopup);
       window.helpers.showElement(uploadFormElement);
-      window.resize.uploadClose();
+      window.resize.uploadCloseHandler();
       successButton.removeEventListener('click', closeSuccessHandler);
       document.removeEventListener('keydown', escSuccessHandler);
     };

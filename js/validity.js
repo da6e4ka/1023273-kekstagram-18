@@ -100,7 +100,7 @@
     }
   };
 
-  var handler = function () {
+  var validationHandler = function () {
     var hashtags = inputElement.value.toLowerCase().split(' ');
     if (inputElement.value !== '') {
       validate(hashtags);
@@ -111,7 +111,7 @@
     }
   };
 
-  buttonElement.addEventListener('click', handler);
+  buttonElement.addEventListener('click', validationHandler);
 
   window.validity = {
     inputElement: inputElement,

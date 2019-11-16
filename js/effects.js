@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_PERCENTS = 100;
+
   var pinElement = document.querySelector('.effect-level__pin');
   var previewElement = document.querySelector('.img-upload__preview');
   var lineElement = document.querySelector('.effect-level__line');
@@ -59,10 +61,10 @@
 
   var resetStyles = function (elements) {
     var list = Object.values(elements);
-    for (var i = 0; i < list.length; i++) {
-      previewElement.classList.remove(list[i].class);
+    list.forEach(element => {
+      previewElement.classList.remove(element.class);
       previewElement.removeAttribute('style');
-    }
+    });
   };
 
   var hideLineElement = function (element) {
@@ -80,7 +82,7 @@
   };
 
   var getNewOffsetLeft = function (shift, rangeWidth) {
-    var newOffsetLeft = (pinElement.offsetLeft - shift) / rangeWidth * 100;
+    var newOffsetLeft = (pinElement.offsetLeft - shift) / rangeWidth * MAX_PERCENTS;
     if (newOffsetLeft < 0) {
       newOffsetLeft = 0;
     } else if (newOffsetLeft > 100) {
@@ -89,7 +91,7 @@
     return newOffsetLeft;
   };
 
-  var handler = function (i, list) {
+  var initHandler = function (i, list) {
     return function () {
       hideLineElement(list[i]);
       resetStyles(list);
@@ -100,11 +102,11 @@
 
   var setListenersToEffects = function (object) {
     var list = Object.values(object);
-    for (var i = 0; i < list.length; i++) {
-      if (list[i] && list[i].element && list[i].class) {
-        list[i].element.addEventListener('click', handler(i, list));
+    list.forEach((node, i, list) => {
+      if (node && node.element && node.class) {
+        node.element.addEventListener('click', initHandler(i, list));
       }
-    }
+    })
   };
 
   setListenersToEffects(effects);
@@ -116,7 +118,7 @@
     var rangeWidth = lineElement.offsetWidth;
     var dragged = false;
 
-    var onMouseMove = function (moveEvent) {
+    var mouseMoveHandler = function (moveEvent) {
       moveEvent.preventDefault();
       var currentFilter = currentEffect.filter;
       var shift = startPositionX - moveEvent.clientX;
@@ -133,25 +135,25 @@
         previewElement.style.filter = currentFilter + '(' + offsetLeft + '%)';
       }
 
-      currentEffect.current = offsetLeft / 100;
+      currentEffect.current = offsetLeft / MAX_PERCENTS;
     };
 
-    var onMouseUp = function (upEvent) {
+    var mouseMapHandler = function (upEvent) {
       upEvent.preventDefault();
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseMapHandler);
 
       if (dragged) {
-        var onClickPreventDefault = function (e) {
+        var preventDefaultHandler = function (e) {
           e.preventDefault();
-          pinElement.removeEventListener('click', onClickPreventDefault);
+          pinElement.removeEventListener('click', preventDefaultHandler);
         };
-        pinElement.addEventListener('click', onClickPreventDefault);
+        pinElement.addEventListener('click', preventDefaultHandler);
       }
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseMapHandler);
   };
 
   pinElement.addEventListener('mousedown', mouseDownHanlder);
