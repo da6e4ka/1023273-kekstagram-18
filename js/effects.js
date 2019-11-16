@@ -61,7 +61,7 @@
 
   var resetStyles = function (elements) {
     var list = Object.values(elements);
-    list.forEach(element => {
+    list.forEach(function (element) {
       previewElement.classList.remove(element.class);
       previewElement.removeAttribute('style');
     });
@@ -102,11 +102,11 @@
 
   var setListenersToEffects = function (object) {
     var list = Object.values(object);
-    list.forEach((node, i, list) => {
+    list.forEach(function (node, i) {
       if (node && node.element && node.class) {
         node.element.addEventListener('click', initHandler(i, list));
       }
-    })
+    });
   };
 
   setListenersToEffects(effects);

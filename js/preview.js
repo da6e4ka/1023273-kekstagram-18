@@ -15,10 +15,10 @@
 
   var renderComments = function (comments, number, from) {
     for (var i = from; i < comments.length && i < number; i++) {
-      var commentElement = commentTemplate.cloneNode(true)
+      var commentElement = commentTemplate.cloneNode(true);
       commentElement.querySelector('.social__picture').src = 'img/avatar-' + window.helpers.getRandomNumber(1, 6) + '.svg';
       commentElement.querySelector('.social__text').textContent = comments[i].message;
-      socialCommentsElement.appendChild(commentElement)
+      socialCommentsElement.appendChild(commentElement);
     }
 
     bigPictureSocialElement.querySelector('.comments-count')
@@ -68,7 +68,7 @@
     var fragment = document.createDocumentFragment();
     var filters = document.querySelector('.img-filters');
 
-    array.forEach(element => {
+    array.forEach(function (element) {
       fragment.appendChild(renderTemplate(element));
     });
 
@@ -160,7 +160,7 @@
       }
     };
 
-    var clickCloseHandler = function(event) {
+    var clickCloseHandler = function (event) {
       if (event.target === successPopup) {
         closeSuccessHandler();
       }

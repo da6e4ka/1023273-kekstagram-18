@@ -23,9 +23,9 @@
   };
 
   var sortByPopularity = function (photos) {
-    return photos.sort((photo1, photo2) => {
-      return photo1.likes < photo2.likes ? 1 : -1
-    })
+    return photos.sort(function (photo1, photo2) {
+      return photo1.likes < photo2.likes ? 1 : -1;
+    });
   };
 
   window.filter = {

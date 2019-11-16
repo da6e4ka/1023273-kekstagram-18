@@ -14,19 +14,29 @@
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onLoad && onLoad && onLoad(xhr.response);
-        onSuccess && onSuccess(xhr.response);
+        if (onLoad) {
+          onLoad(xhr.response);
+        }
+        if (onSuccess) {
+          onSuccess(xhr.response);
+        }
       } else {
-        onError && onError(Errors.UNEXPECTED_ERROR);
+        if (onError) {
+          onError(Errors.UNEXPECTED_ERROR);
+        }
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError && onError(Errors.CONNECTION_ERROR);
+      if (onError) {
+        onError(Errors.CONNECTION_ERROR);
+      }
     });
 
     xhr.addEventListener('timeout', function () {
-      onError && onError(Errors.TIMEOUT_ERROR);
+      if (onError) {
+        onError(Errors.TIMEOUT_ERROR);
+      }
     });
 
     xhr.timeout = window.constants.CONNECTION_TIMEOUT;
