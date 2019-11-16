@@ -7,14 +7,14 @@
     UNEXPECTED_ERROR: 'Произошла ошибка'
   };
 
-  var ajax = function(URL, TYPE, data, onSuccess, onError, onLoad) {
+  var ajax = function (URL, TYPE, data, onSuccess, onError, onLoad) {
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onLoad && onLoad  && onLoad(xhr.response);
+        onLoad && onLoad && onLoad(xhr.response);
         onSuccess && onSuccess(xhr.response);
       } else {
         onError && onError(Errors.UNEXPECTED_ERROR);
@@ -36,12 +36,12 @@
   };
 
   var load = function (URL, onSuccess, onError) {
-    ajax(URL, 'GET', null, onSuccess, onError, null)
+    ajax(URL, 'GET', null, onSuccess, onError, null);
   };
 
   var request = function (data, onLoad, onError) {
     var URL = 'https://js.dump.academy/kekstagram';
-    ajax(URL, 'POST', data, null, onError, onLoad)
+    ajax(URL, 'POST', data, null, onError, onLoad);
   };
 
   window.api = {

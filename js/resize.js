@@ -13,13 +13,14 @@
   var biggerControlElement = document.querySelector('.scale__control--bigger');
   var uploadPreviewElement = document.querySelector('.img-upload__preview');
 
-  var uploadShowHandler = function () {
+
+  var showHandler = function () {
     uploadPreviewElement.style.transform = 'scale(1)';
     uploadOverlayElement.classList.remove('hidden');
     window.helpers.hideElement(window.effects.levelElement);
   };
 
-  var uploadCloseHandler = function () {
+  var closeHandler = function () {
     window.helpers.hideElement(uploadOverlayElement);
     document.removeEventListener('keydown', uploadCloseHandler);
   };
@@ -30,7 +31,7 @@
       !window.validity.inputElement.matches(':focus') &&
       !window.validity.textareaElement.matches(':focus')
     ) {
-      uploadCloseHandler();
+      closeHandler();
     }
   };
 
@@ -53,13 +54,13 @@
   };
 
   document.addEventListener('keydown', uploadCloseHandler);
-  uploadFileElement.addEventListener('change', uploadShowHandler);
+  uploadFileElement.addEventListener('change', showHandler);
   biggerControlElement.addEventListener('click', resizeBiggerHandler);
   smallerControlElement.addEventListener('click', resizeSmallerHandler);
-  uploadCancelElement.addEventListener('click', uploadCloseHandler);
+  uploadCancelElement.addEventListener('click', closeHandler);
 
   window.resize = {
-    uploadCloseHandler: uploadCloseHandler,
+    uploadClose: closeHandler,
     uploadPreviewElement: uploadPreviewElement
-};
+  };
 })();

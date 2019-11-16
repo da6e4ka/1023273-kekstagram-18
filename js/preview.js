@@ -149,7 +149,7 @@
     var closeSuccessHandler = function () {
       mainElement.removeChild(successPopup);
       window.helpers.showElement(uploadFormElement);
-      window.resize.uploadCloseHandler();
+      window.resize.uploadClose();
       successButton.removeEventListener('click', closeSuccessHandler);
       document.removeEventListener('keydown', escSuccessHandler);
     };
