@@ -3,7 +3,7 @@
 (function () {
   var commentElement = document.querySelector('.social__footer-text');
 
-  var preventHandler = function(evt) {
+  var preventHandler = function (evt) {
     evt.stopPropagation();
   };
 
