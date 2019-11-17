@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var onPopupClose = function (event) {
-    if (event.keyCode === window.constants.ESC_KEYCODE) {
+  var onPopupClose = function (evt) {
+    if (evt.keyCode === window.constants.ESC_KEYCODE) {
       closeBigPhoto();
     }
   };
@@ -16,8 +16,8 @@
     window.helpers.showElement(window.preview.bigPictureElement);
     window.preview.bigPictureElement.querySelector('.big-picture__img').querySelector('img').src = data.url;
 
-    document.addEventListener('keydown', function (event) {
-      if (event.keyCode === window.constants.ESC_KEYCODE) {
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.constants.ESC_KEYCODE) {
         closeBigPhoto();
       }
     });

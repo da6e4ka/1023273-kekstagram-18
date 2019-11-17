@@ -111,10 +111,10 @@
 
   setListenersToEffects(effects);
 
-  var mouseDownHanlder = function (event) {
-    event.preventDefault();
+  var mouseDownHanlder = function (evt) {
+    evt.preventDefault();
 
-    var startPositionX = event.clientX;
+    var startPositionX = evt.clientX;
     var rangeWidth = lineElement.offsetWidth;
     var dragged = false;
 

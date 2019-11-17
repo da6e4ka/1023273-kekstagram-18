@@ -81,16 +81,16 @@
     var photos = data;
     getImage(window.filter.sortByPopularity(photos));
 
-    var popularPhotosHandler = window.debounce(function (event) {
+    var popularPhotosHandler = window.debounce(function (evt) {
       window.filter.removePictures();
       window.filter.removeFilter();
 
       getImage(window.filter.sortByPopularity(photos));
 
-      event.target.classList.add('img-filters__button--active');
+      evt.target.classList.add('img-filters__button--active');
     });
 
-    var randomPhotosHandler = window.debounce(function (event) {
+    var randomPhotosHandler = window.debounce(function (evt) {
       window.filter.removePictures();
       window.filter.removeFilter();
       var uniquePhotos =
@@ -98,14 +98,14 @@
           return photos.indexOf(it) === i;
         });
       window.debounce(getImage(window.helpers.sortRandomPhotos(uniquePhotos)));
-      event.target.classList.add('img-filters__button--active');
+      evt.target.classList.add('img-filters__button--active');
     });
 
-    var discussedPhotosHandler = window.debounce(function (event) {
+    var discussedPhotosHandler = window.debounce(function (evt) {
       window.filter.removePictures();
       window.filter.removeFilter();
       window.debounce(getImage(window.helpers.sortByComments(photos)));
-      event.target.classList.add('img-filters__button--active');
+      evt.target.classList.add('img-filters__button--active');
     });
 
     window.filter.popularFilterElement.addEventListener('click', popularPhotosHandler);
@@ -154,14 +154,14 @@
       document.removeEventListener('keydown', escSuccessHandler);
     };
 
-    var escSuccessHandler = function (event) {
-      if (event.keyCode === window.constants.ESC_KEYCODE) {
+    var escSuccessHandler = function (evt) {
+      if (evt.keyCode === window.constants.ESC_KEYCODE) {
         closeSuccessHandler();
       }
     };
 
-    var clickCloseHandler = function (event) {
-      if (event.target === successPopup) {
+    var clickCloseHandler = function (evt) {
+      if (evt.target === successPopup) {
         closeSuccessHandler();
       }
     };
@@ -190,16 +190,16 @@
 
     errorButton.addEventListener('click', closeErrorHandler);
 
-    var escErrorHandler = function (event) {
-      if (event.keyCode === window.constants.ESC_KEYCODE) {
+    var escErrorHandler = function (evt) {
+      if (evt.keyCode === window.constants.ESC_KEYCODE) {
         closeErrorHandler();
       }
     };
 
     document.addEventListener('keydown', escErrorHandler);
 
-    document.addEventListener('click', function (event) {
-      if (event.target === errorPopup) {
+    document.addEventListener('click', function (evt) {
+      if (evt.target === errorPopup) {
         closeErrorHandler();
       }
     });

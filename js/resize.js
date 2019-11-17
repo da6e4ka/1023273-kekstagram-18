@@ -25,9 +25,9 @@
     document.removeEventListener('keydown', uploadCloseHandler);
   };
 
-  var uploadCloseHandler = function (event) {
+  var uploadCloseHandler = function (evt) {
     if (
-      event.keyCode === window.constants.ESC_KEYCODE &&
+      evt.keyCode === window.constants.ESC_KEYCODE &&
       !window.validity.inputElement.matches(':focus') &&
       !window.validity.textareaElement.matches(':focus')
     ) {
