@@ -12,7 +12,7 @@
     });
   };
 
-  var removeFilter = function () {
+  var reset = function () {
     var filters = document.querySelector('.img-filters');
     var filterButtons = filters.querySelectorAll('.img-filters__button');
     filterButtons.forEach(function (button) {
@@ -31,9 +31,9 @@
   window.filter = {
     sortByPopularity: sortByPopularity,
     removePictures: removePictures,
-    removeFilter: removeFilter,
-    popularFilterElement: popularFilterElement,
-    discussedFilterElement: discussedFilterElement,
-    randomFilterElement: randomFilterElement
+    reset: reset,
+    popularElement: popularFilterElement,
+    discussedElement: discussedFilterElement,
+    randomElement: randomFilterElement
   };
 })();

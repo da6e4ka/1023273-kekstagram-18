@@ -83,7 +83,7 @@
 
     var popularPhotosHandler = window.debounce(function (evt) {
       window.filter.removePictures();
-      window.filter.removeFilter();
+      window.filter.reset();
 
       getImage(window.filter.sortByPopularity(photos));
 
@@ -92,7 +92,7 @@
 
     var randomPhotosHandler = window.debounce(function (evt) {
       window.filter.removePictures();
-      window.filter.removeFilter();
+      window.filter.reset();
       var uniquePhotos =
         photos.filter(function (it, i) {
           return photos.indexOf(it) === i;
@@ -103,14 +103,14 @@
 
     var discussedPhotosHandler = window.debounce(function (evt) {
       window.filter.removePictures();
-      window.filter.removeFilter();
+      window.filter.reset();
       window.debounce(getImage(window.helpers.sortByComments(photos)));
       evt.target.classList.add('img-filters__button--active');
     });
 
-    window.filter.popularFilterElement.addEventListener('click', popularPhotosHandler);
-    window.filter.discussedFilterElement.addEventListener('click', discussedPhotosHandler);
-    window.filter.randomFilterElement.addEventListener('click', randomPhotosHandler);
+    window.filter.popularElement.addEventListener('click', popularPhotosHandler);
+    window.filter.discussedElement.addEventListener('click', discussedPhotosHandler);
+    window.filter.randomElement.addEventListener('click', randomPhotosHandler);
 
   };
 
@@ -179,6 +179,7 @@
       mainElement.removeChild(errorPopup);
       errorButton.removeEventListener('click', closeErrorHandler);
       document.removeEventListener('keydown', escErrorHandler);
+      document.addEventListener('click', clickCloseErrorHandler);
     };
 
     errorButton.addEventListener('click', closeErrorHandler);
@@ -189,14 +190,14 @@
       }
     };
 
-    document.addEventListener('keydown', escErrorHandler);
-
-    document.addEventListener('click', function (evt) {
+    var clickCloseErrorHandler = function(evt) {
       if (evt.target === errorPopup) {
         closeErrorHandler();
       }
-    });
+    };
 
+    document.addEventListener('keydown', escErrorHandler);
+    document.addEventListener('click', clickCloseErrorHandler);
   };
 
   window.preview = {
