@@ -190,7 +190,7 @@
       }
     };
 
-    var clickCloseErrorHandler = function(evt) {
+    var clickCloseErrorHandler = function (evt) {
       if (evt.target === errorPopup) {
         closeErrorHandler();
       }

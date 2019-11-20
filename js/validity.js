@@ -117,7 +117,7 @@
     }
   };
 
-  var resetValidity = function() {
+  var resetValidity = function () {
     resetErrorBorder(inputElement);
     inputElement.setCustomValidity('');
     textareaElement.value = '';

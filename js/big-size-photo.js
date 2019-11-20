@@ -7,7 +7,7 @@
     evt.stopPropagation();
   };
 
-  var escCloseHandler = function(evt) {
+  var escCloseHandler = function (evt) {
     if (evt.keyCode === window.constants.ESC_KEYCODE) {
       closeBigPhoto();
     }
