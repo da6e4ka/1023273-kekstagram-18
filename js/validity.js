@@ -15,7 +15,13 @@
   };
 
   var setErrorBorder = function (element) {
-    element.style = 'border-color: red; border-width: 5px;';
+    element.style.borderColor = 'red';
+  };
+
+  var resetErrorBorder = function (element) {
+    if (element) {
+      element.style.borderColor = 'white';
+    }
   };
 
   var validateComment = function (comment) {
@@ -111,10 +117,18 @@
     }
   };
 
+  var resetValidity = function() {
+    resetErrorBorder(inputElement);
+    inputElement.setCustomValidity('');
+    textareaElement.value = '';
+    inputElement.value = '';
+  };
+
   buttonElement.addEventListener('click', validationHandler);
 
   window.validity = {
     inputElement: inputElement,
-    textareaElement: textareaElement
+    textareaElement: textareaElement,
+    resetValidity: resetValidity
   };
 })();

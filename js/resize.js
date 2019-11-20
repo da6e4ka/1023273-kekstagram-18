@@ -18,11 +18,20 @@
     uploadPreviewElement.style.transform = 'scale(1)';
     uploadOverlayElement.classList.remove('hidden');
     window.helpers.hideElement(window.effects.levelElement);
+    window.effects.resetStyles(Object.values(window.effects.Variants));
+    window.validity.resetValidity();
+    document.addEventListener('keydown', uploadCloseHandler);
+    biggerControlElement.addEventListener('click', resizeBiggerHandler);
+    smallerControlElement.addEventListener('click', resizeSmallerHandler);
+    uploadCancelElement.addEventListener('click', closeHandler);
   };
 
   var closeHandler = function () {
     window.helpers.hideElement(uploadOverlayElement);
     document.removeEventListener('keydown', uploadCloseHandler);
+    biggerControlElement.removeEventListener('click', resizeBiggerHandler);
+    smallerControlElement.removeEventListener('click', resizeSmallerHandler);
+    uploadCancelElement.removeEventListener('click', closeHandler);
   };
 
   var uploadCloseHandler = function (evt) {
@@ -53,11 +62,7 @@
     }
   };
 
-  document.addEventListener('keydown', uploadCloseHandler);
   uploadFileElement.addEventListener('change', showHandler);
-  biggerControlElement.addEventListener('click', resizeBiggerHandler);
-  smallerControlElement.addEventListener('click', resizeSmallerHandler);
-  uploadCancelElement.addEventListener('click', closeHandler);
 
   window.resize = {
     uploadClose: closeHandler,

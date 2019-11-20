@@ -11,13 +11,13 @@
 
   var currentEffect = null;
 
-  var effects = {
-    none: {
+  var Variants = {
+    NONE: {
       element: document.querySelector('#effect-none'),
       class: 'effects__preview--none',
       filter: 'none',
     },
-    chrome: {
+    CHROME: {
       element: document.querySelector('#effect-chrome'),
       class: 'effects__preview--chrome',
       filter: 'grayscale',
@@ -25,7 +25,7 @@
       current: 1,
       min: 0
     },
-    sepia: {
+    SEPIA: {
       element: document.querySelector('#effect-sepia'),
       class: 'effects__preview--sepia',
       filter: 'sepia',
@@ -33,7 +33,7 @@
       current: 1,
       min: 0
     },
-    marvin: {
+    MARVIN: {
       element: document.querySelector('#effect-marvin'),
       class: 'effects__preview--marvin',
       filter: 'invert',
@@ -41,7 +41,7 @@
       current: 1,
       min: 0
     },
-    phobos: {
+    PHOBOS: {
       element: document.querySelector('#effect-phobos'),
       class: 'effects__preview--phobos',
       filter: 'blur',
@@ -49,7 +49,7 @@
       current: 1,
       min: 0
     },
-    heat: {
+    HEAT: {
       element: document.querySelector('#effect-heat'),
       class: 'effects__preview--heat',
       filter: 'brightness',
@@ -109,7 +109,7 @@
     });
   };
 
-  setListenersToEffects(effects);
+  setListenersToEffects(Variants);
 
   var mouseDownHanlder = function (evt) {
     evt.preventDefault();
@@ -159,6 +159,8 @@
   pinElement.addEventListener('mousedown', mouseDownHanlder);
 
   window.effects = {
-    levelElement: levelElement
+    levelElement: levelElement,
+    resetStyles: resetStyles,
+    Variants: Variants
   };
 })();

@@ -160,16 +160,9 @@
       }
     };
 
-    var clickCloseHandler = function (evt) {
-      if (evt.target === successPopup) {
-        closeSuccessHandler();
-      }
-    };
-
     successButton.addEventListener('click', closeSuccessHandler);
 
     document.addEventListener('keydown', escSuccessHandler);
-    document.addEventListener('click', clickCloseHandler);
   };
 
   var openError = function () {
